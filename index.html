@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>isiemant — Personal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ─── Hamburger Button ─────────────────────────────────── -->
+  <button class="hamburger" id="hamburger" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- ─── Sidebar Overlay ──────────────────────────────────── -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ─── Sidebar Nav ──────────────────────────────────────── -->
+  <nav class="sidebar" id="sidebar">
+    <button class="sidebar__close" id="sidebarClose" aria-label="Close navigation">✕</button>
+    <ul>
+      <li><a href="#hero"     class="nav-link">Home</a></li>
+      <li><a href="#about"    class="nav-link">About</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#gallery"  class="nav-link">Photography</a></li>
+      <li><a href="#contact"  class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero__inner">
+      <p class="hero__greeting">Hello, I'm</p>
+      <h1 class="hero__name">Isiemant</h1>
+      <p class="hero__tagline">Developer · Photographer · Lifelong Learner</p>
+      <a href="#about" class="btn">Get to know me</a>
+    </div>
+    <div class="hero__scroll-hint">↓</div>
+  </section>
+
+  <!-- ─── About ────────────────────────────────────────────── -->
+  <section id="about">
+    <div class="section-inner">
+      <span class="section-label">About Me</span>
+      <h2>A little about myself</h2>
+      <div class="about__grid">
+        <div class="about__portrait placeholder-portrait"></div>
+        <div class="about__text">
+          <p>
+            Hi there! I'm a curious developer and photographer based somewhere
+            beautiful. I love building things for the web and capturing quiet
+            moments through a lens.
+          </p>
+          <p>
+            This site is both my personal corner of the internet and an ongoing
+            learning project — so expect it to grow and change over time. I'm
+            currently exploring HTML, CSS, JavaScript, and AI tools like
+            <a href="https://github.com/anthropics/skills" target="_blank" rel="noopener">
+              Anthropic's Skills
+            </a>.
+          </p>
+          <p>
+            When I'm not at a keyboard, you'll find me outside with my camera,
+            looking for interesting light.
+          </p>
+          <div class="about__tags">
+            <span>HTML &amp; CSS</span>
+            <span>JavaScript</span>
+            <span>Photography</span>
+            <span>AI &amp; Claude</span>
+            <span>Git</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Projects ─────────────────────────────────────────── -->
+  <section id="projects">
+    <div class="section-inner">
+      <span class="section-label">Projects</span>
+      <h2>Things I've built</h2>
+      <div class="projects__grid">
+
+        <article class="card">
+          <div class="card__accent" style="background: var(--lavender);"></div>
+          <h3>This Website</h3>
+          <p>A personal site built from scratch as a learning project — pure HTML, CSS &amp; JavaScript. No frameworks, just fundamentals.</p>
+          <div class="card__tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+        </article>
+
+        <article class="card">
+          <div class="card__accent" style="background: var(--sage);"></div>
+          <h3>Skills Explorer</h3>
+          <p>Local exploration of Anthropic's Agent Skills repository — learning how Claude's skill system works from the source.</p>
+          <div class="card__tags"><span>AI</span><span>Claude</span><span>Git</span></div>
+          <a class="card__link" href="https://github.com/anthropics/skills" target="_blank" rel="noopener">View on GitHub →</a>
+        </article>
+
+        <article class="card">
+          <div class="card__accent" style="background: var(--blush);"></div>
+          <h3>Photo Archive</h3>
+          <p>An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.</p>
+          <div class="card__tags"><span>Photography</span></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Gallery ──────────────────────────────────────────── -->
+  <section id="gallery">
+    <div class="section-inner">
+      <span class="section-label">Photography</span>
+      <h2>Through the lens</h2>
+      <p class="section-sub">Click any image to view it larger. Placeholder colours — real photos coming soon.</p>
+
+      <div class="masonry">
+        <!-- Each .photo block simulates a photo of varied height -->
+        <div class="photo" data-title="Golden Hour" style="background:#f5d5e0; height:260px;">
+          <div class="photo__overlay"><span>Golden Hour</span></div>
+        </div>
+        <div class="photo" data-title="Forest Path" style="background:#d5e8d5; height:340px;">
+          <div class="photo__overlay"><span>Forest Path</span></div>
+        </div>
+        <div class="photo" data-title="Still Water" style="background:#d5e8f5; height:200px;">
+          <div class="photo__overlay"><span>Still Water</span></div>
+        </div>
+        <div class="photo" data-title="Morning Mist" style="background:#e8d5f5; height:300px;">
+          <div class="photo__overlay"><span>Morning Mist</span></div>
+        </div>
+        <div class="photo" data-title="City Lights" style="background:#f5e8d5; height:220px;">
+          <div class="photo__overlay"><span>City Lights</span></div>
+        </div>
+        <div class="photo" data-title="Quiet Street" style="background:#f5d5e8; height:360px;">
+          <div class="photo__overlay"><span>Quiet Street</span></div>
+        </div>
+        <div class="photo" data-title="Open Sky" style="background:#d5f5e8; height:240px;">
+          <div class="photo__overlay"><span>Open Sky</span></div>
+        </div>
+        <div class="photo" data-title="Harbour Blues" style="background:#d5ddf5; height:310px;">
+          <div class="photo__overlay"><span>Harbour Blues</span></div>
+        </div>
+        <div class="photo" data-title="Autumn Walk" style="background:#f5f0d5; height:280px;">
+          <div class="photo__overlay"><span>Autumn Walk</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Lightbox ─────────────────────────────────────────── -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">✕</button>
+    <div class="lightbox__content" id="lightboxContent"></div>
+    <p class="lightbox__title" id="lightboxTitle"></p>
+  </div>
+
+  <!-- ─── Contact ──────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="section-inner section-inner--narrow">
+      <span class="section-label">Contact</span>
+      <h2>Say hello</h2>
+      <p class="section-sub">This form is a static mockup — drop me an email directly for now.</p>
+
+      <form class="contact-form" onsubmit="return false;">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Your name" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" placeholder="What's on your mind?"></textarea>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Send message</button>
+        <p class="form-note" id="formNote" hidden>✓ Thanks! (This is a mockup — no message was actually sent.)</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── Footer ───────────────────────────────────────────── -->
+  <footer>
+    <p>© 2026 isiemant · Built with curiosity &amp; soft pastels</p>
+    <p class="footer-sub">
+      Learning with
+      <a href="https://github.com/anthropics/skills" target="_blank" rel="noopener">anthropics/skills</a>
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
