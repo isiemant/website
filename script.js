@@ -89,6 +89,26 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
   submitBtn.textContent = 'Sent ✓';
   submitBtn.disabled = true;
-  submitBtn.style.background = '#7a9e80';
+  submitBtn.style.background = '#15803d';
   formNote.hidden = false;
+});
+
+// ── 4. Scroll Reveal (Intersection Observer) ─────────────────
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => {
+          entry.target.classList.add('is-visible');
+        }, Number(delay));
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
+
+document.querySelectorAll('[data-reveal]').forEach((el) => {
+  revealObserver.observe(el);
 });
