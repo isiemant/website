@@ -1168,3 +1168,102 @@ footer a:hover { color: var(--coral); }
   .section-inner { padding: 60px 24px; }
   .slideshow__btn { padding: 9px 12px; font-size: 1rem; }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   CONSENT BANNER
+───────────────────────────────────────────────────────────── */
+.consent-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--surface-2);
+  border-top: var(--outline);
+  box-shadow: 0 -4px 0 var(--ink);
+  padding: 16px 24px;
+  transition: transform .3s ease, opacity .3s ease;
+}
+.consent-banner--hidden {
+  transform: translateY(110%);
+  opacity: 0;
+  pointer-events: none;
+}
+.consent-banner__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.consent-banner__text {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: .9rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.consent-banner__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.consent-banner__save {
+  margin-left: auto;
+  padding: 8px 20px;
+  font-size: .9rem;
+}
+
+/* Toggle switch */
+.consent-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.consent-toggle input { display: none; }
+.consent-toggle__track {
+  width: 44px;
+  height: 24px;
+  background: var(--ink-5);
+  border: var(--outline);
+  border-radius: 999px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+.consent-toggle__track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  transition: transform .2s;
+}
+.consent-toggle input:checked + .consent-toggle__track {
+  background: var(--yellow);
+}
+.consent-toggle input:checked + .consent-toggle__track::after {
+  transform: translateX(20px);
+}
+.consent-toggle__name {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* System-font fallback when fonts declined */
+.no-custom-fonts h1,
+.no-custom-fonts h2,
+.no-custom-fonts h3,
+.no-custom-fonts .hero__name,
+.no-custom-fonts .hero__tagline {
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0;
+}

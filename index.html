@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="cache-bust" content="__CACHE_BUST__" />
   <title>isiemant — Personal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Google Fonts are loaded dynamically by js/consent.js based on user preference -->
+  <!-- Umami Analytics — privacy-friendly, no consent required under DSGVO -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="80b97f87-ceea-4d91-a32e-2c4d94ed0fd8"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -176,7 +176,25 @@
       <span data-i18n="footer.source">Source at</span>
       <a href="https://github.com/isiemant/website" target="_blank" rel="noopener">isiemant/website</a>
     </p>
+    <p class="footer-sub">
+      <a href="#" id="consentReset" data-i18n="consent.reset">Cookie settings</a>
+    </p>
   </footer>
+
+  <!-- ─── Consent Banner ──────────────────────────────────────── -->
+  <div class="consent-banner" id="consentBanner" role="dialog" aria-label="Cookie settings">
+    <div class="consent-banner__inner">
+      <p class="consent-banner__text" data-i18n="consent.text">This site can load Google Fonts from external servers (IP transfer to Google). You can decline this below.</p>
+      <div class="consent-banner__row">
+        <label class="consent-toggle">
+          <input type="checkbox" id="consentFontsToggle" checked />
+          <span class="consent-toggle__track"></span>
+          <span class="consent-toggle__name" data-i18n="consent.fonts">Custom Fonts (Google Fonts)</span>
+        </label>
+        <button class="btn consent-banner__save" id="consentSave" data-i18n="consent.save">Save &amp; Close</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ─── Story Modal ───────────────────────────────────────── -->
   <dialog class="story-modal" id="storyModal" aria-label="About me story">

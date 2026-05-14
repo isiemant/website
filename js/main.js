@@ -15,14 +15,15 @@ import { initCarousel }                          from './carousel.js';
 import { initStoryModal }                        from './story.js';
 import { initCyclops }                           from './cyclops.js';
 import { loadContentCSVs, applyLang, initI18n }  from './i18n.js';
+import { initConsent, loadFonts }                from './consent.js';
 
 // ── Scroll-reveal — static elements ──────────────────────────
 // Dynamic elements (project cards, etc.) are observed individually
 // inside buildProjects() in i18n.js after they are added to the DOM.
 document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
 
-// ── Feature modules ───────────────────────────────────────────
-initSidebar();
+// ── Feature modules ───────────────────────────────────────────loadFonts();     // apply consent prefs before paint
+initConsent();   // show banner if first visitinitSidebar();
 initScroll();
 initSlideshow();
 initCarousel();

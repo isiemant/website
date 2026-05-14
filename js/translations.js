@@ -425,8 +425,25 @@ const S_STORY = {
 };
 
 
-/* ══════════════════════════════════════════════════════════
-   MERGE — shape consumed by i18n.js stays identical.
+/* ══════════════════════════════════════════════════════════   CONSENT BANNER
+═══════════════════════════════════════════════════════ */
+const S_CONSENT = {
+  en: {
+    'consent.text':  'This site can load Google Fonts from external servers (IP transfer to Google). You can decline this below.',
+    'consent.fonts': 'Custom Fonts (Google Fonts)',
+    'consent.save':  'Save & Close',
+    'consent.reset': 'Cookie settings',
+  },
+  de: {
+    'consent.text':  'Diese Seite kann Google Fonts von externen Servern laden (IP-Übertragung an Google gemäß DSGVO). Du kannst das unten ablehnen.',
+    'consent.fonts': 'Schriftarten (Google Fonts)',
+    'consent.save':  'Speichern & Schließen',
+    'consent.reset': 'Cookie-Einstellungen',
+  },
+};
+
+
+/* ═══════════════════════════════════════════════════════   MERGE — shape consumed by i18n.js stays identical.
    To add a language: add the key to every section above,
    then add a new entry here, e.g.:
      fr: { ...S_NAV.fr, ...S_HERO.fr, … }
@@ -435,11 +452,11 @@ export const TRANSLATIONS = {
   en: {
     ...S_NAV.en, ...S_HERO.en, ...S_ABOUT.en, ...S_PROJECTS.en,
     ...S_UPDATES.en, ...S_GALLERY.en, ...S_CONTACT.en, ...S_FOOTER.en,
-    ...S_ARIA.en, ...S_UI.en, ...S_TIMELINE.en, ...S_STORY.en,
+    ...S_ARIA.en, ...S_UI.en, ...S_TIMELINE.en, ...S_STORY.en, ...S_CONSENT.en,
   },
   de: {
     ...S_NAV.de, ...S_HERO.de, ...S_ABOUT.de, ...S_PROJECTS.de,
     ...S_UPDATES.de, ...S_GALLERY.de, ...S_CONTACT.de, ...S_FOOTER.de,
-    ...S_ARIA.de, ...S_UI.de, ...S_TIMELINE.de, ...S_STORY.de,
+    ...S_ARIA.de, ...S_UI.de, ...S_TIMELINE.de, ...S_STORY.de, ...S_CONSENT.de,
   },
 };
