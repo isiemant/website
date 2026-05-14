@@ -12,7 +12,6 @@
 ───────────────────────────────────────────────────────────── */
 
 import { TRANSLATIONS }                        from './translations.js';
-import { CACHE_BUST }                          from './constants.js';
 import { parseCSV }                            from './utils.js';
 import { revealObserver }                      from './utils.js';
 import { carouselGoTo, setTimelineItems }      from './carousel.js';
@@ -34,8 +33,8 @@ let formSubmitted = false;
 export async function loadContentCSVs() {
   try {
     const [projRes, updRes] = await Promise.all([
-      fetch('data/projects.csv?v=' + CACHE_BUST),
-      fetch('data/updates.csv?v='   + CACHE_BUST),
+      fetch('data/projects.csv?v=' + (document.querySelector('meta[name="cache-bust"]')?.content || Date.now())),
+      fetch('data/updates.csv?v='   + (document.querySelector('meta[name="cache-bust"]')?.content || Date.now())),
     ]);
     if (!projRes.ok || !updRes.ok) throw new Error('HTTP error');
 
