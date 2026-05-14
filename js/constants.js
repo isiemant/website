@@ -74,3 +74,11 @@ export const REVEAL_THRESHOLD = 0.12;
  * so the full eye is on-screen before it animates in.
  */
 export const CYCLOPS_THRESHOLD = 0.5;
+
+// ── Cache busting ─────────────────────────────────────────────
+/**
+ * Replaced at deploy time by the CI workflow with the Git commit SHA.
+ * Appended as ?v=<sha> to CSV fetch URLs so browsers always load fresh
+ * data after a push, without requiring a manual hard reload.
+ */
+export const CACHE_BUST = '__CACHE_BUST__';
