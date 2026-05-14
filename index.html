@@ -6,73 +6,68 @@
   <title>isiemant — Personal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
+  <!-- ─── Scroll Progress Bar ───────────────────────────────── -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <!-- ─── Hamburger Button ─────────────────────────────────── -->
-  <button class="hamburger" id="hamburger" aria-label="Open navigation">
+  <button class="hamburger" id="hamburger" aria-label="Open navigation" data-i18n-aria="aria.hamburger">
     <span></span><span></span><span></span>
   </button>
+
+  <!-- ─── Language Toggle ──────────────────────────────────── -->
+  <button class="lang-toggle" id="langToggle" aria-label="Switch language">DE</button>
 
   <!-- ─── Sidebar Overlay ──────────────────────────────────── -->
   <div class="overlay" id="overlay"></div>
 
   <!-- ─── Sidebar Nav ──────────────────────────────────────── -->
   <nav class="sidebar" id="sidebar">
-    <button class="sidebar__close" id="sidebarClose" aria-label="Close navigation">✕</button>
+    <button class="sidebar__close" id="sidebarClose" aria-label="Close navigation" data-i18n-aria="aria.sidebar-close">✕</button>
     <ul>
-      <li><a href="#hero"     class="nav-link">Home</a></li>
-      <li><a href="#about"    class="nav-link">About</a></li>
-      <li><a href="#projects" class="nav-link">Projects</a></li>
-      <li><a href="#gallery"  class="nav-link">Photography</a></li>
-      <li><a href="#contact"  class="nav-link">Contact</a></li>
+      <li><a href="#hero"     class="nav-link" data-i18n="nav.home">Home</a></li>
+      <li><a href="#about"    class="nav-link" data-i18n="nav.about">About</a></li>
+      <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a></li>
+      <li><a href="#updates"  class="nav-link" data-i18n="nav.updates">Updates</a></li>
+      <li><a href="#gallery"  class="nav-link" data-i18n="nav.gallery">Photography</a></li>
+      <li><a href="#contact"  class="nav-link" data-i18n="nav.contact">Contact</a></li>
     </ul>
   </nav>
 
   <!-- ─── Hero ─────────────────────────────────────────────── -->
   <section id="hero">
     <div class="hero__inner" data-reveal>
-      <p class="hero__greeting">Hello, I'm</p>
+      <p class="hero__greeting" data-i18n="hero.greeting">Hello, I'm</p>
       <h1 class="hero__name">Isiemant</h1>
-      <p class="hero__tagline">Developer · Photographer · Lifelong Learner</p>
-      <a href="#about" class="btn">Get to know me</a>
+      <p class="hero__tagline" data-i18n="hero.tagline">AI-Coding · Photography · Marketing</p>
+      <a href="#about" class="btn" data-i18n="hero.cta">Get to know me</a>
     </div>
-    <div class="hero__scroll-hint">Scroll</div>
   </section>
 
   <!-- ─── About ────────────────────────────────────────────── -->
   <section id="about">
-    <div class="section-inner" data-reveal>
-      <span class="section-label">About Me</span>
-      <h2>A little about myself</h2>
-      <div class="about__grid">
+    <div class="section-inner">
+      <span class="section-label" data-reveal data-i18n="about.label">About Me</span>
+      <h2 data-i18n="about.heading">A little about myself</h2>
+      <div class="about__grid" data-reveal>
         <div class="about__portrait placeholder-portrait"></div>
         <div class="about__text">
-          <p>
-            Hi there! I'm a curious developer and photographer based somewhere
-            beautiful. I love building things for the web and capturing quiet
-            moments through a lens.
+          <p class="about__teaser" data-i18n="about.teaser">
+            Curious developer, photographer, and marketing explorer.
+            I build things for the web, capture quiet moments through a lens,
+            and share everything I learn along the way.
           </p>
-          <p>
-            This site is both my personal corner of the internet and an ongoing
-            learning project — so expect it to grow and change over time. I'm
-            I'm currently exploring HTML, CSS, JavaScript, and sharing what I build at
-            <a href="https://github.com/isiemant/website" target="_blank" rel="noopener">
-              isiemant/website
-            </a>.
-          </p>
-          <p>
-            When I'm not at a keyboard, you'll find me outside with my camera,
-            looking for interesting light.
-          </p>
+          <button class="btn about__story-btn" id="openStory" data-i18n="about.story-btn">Read my story →</button>
           <div class="about__tags">
-            <span>HTML &amp; CSS</span>
-            <span>JavaScript</span>
-            <span>Photography</span>
-            <span>AI &amp; Claude</span>
-            <span>Git</span>
+            <span data-i18n="about.tag.html">HTML &amp; CSS</span>
+            <span data-i18n="about.tag.js">JavaScript</span>
+            <span data-i18n="about.tag.photo">Photography</span>
+            <span data-i18n="about.tag.ai">AI &amp; Claude</span>
+            <span data-i18n="about.tag.git">Git</span>
           </div>
         </div>
       </div>
@@ -82,29 +77,26 @@
   <!-- ─── Projects ─────────────────────────────────────────── -->
   <section id="projects">
     <div class="section-inner" data-reveal>
-      <span class="section-label">Projects</span>
-      <h2>Things I've built</h2>
+      <span class="section-label" data-i18n="projects.label">Current projects</span>
+      <h2 data-i18n="projects.heading">Things I've built</h2>
       <div class="projects__grid">
 
-        <article class="card">
-          <div class="card__accent" style="background: var(--lavender);"></div>
-          <h3>This Website</h3>
-          <p>A personal site built from scratch as a learning project — pure HTML, CSS &amp; JavaScript. No frameworks, just fundamentals.</p>
+        <article class="card" data-reveal data-delay="100">
+          <h3 data-i18n="card1.title">This Website</h3>
+          <p data-i18n="card1.desc">A personal site built from scratch as a learning project — pure HTML, CSS &amp; JavaScript. No frameworks, just fundamentals.</p>
           <div class="card__tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
         </article>
 
-        <article class="card" data-reveal data-delay="100">
-          <div class="card__accent" style="background: var(--sage);"></div>
-          <h3>Website Repository</h3>
-          <p>The source code for this very site — open for exploration, learning, and iteration as the project grows.</p>
+        <article class="card" data-reveal data-delay="200">
+          <h3 data-i18n="card2.title">Website Repository</h3>
+          <p data-i18n="card2.desc">The source code for this very site — open for exploration, learning, and iteration as the project grows.</p>
           <div class="card__tags"><span>HTML</span><span>CSS</span><span>JS</span><span>Git</span></div>
-          <a class="card__link" href="https://github.com/isiemant/website" target="_blank" rel="noopener">View on GitHub →</a>
+          <a class="card__link" href="https://github.com/isiemant/website" target="_blank" rel="noopener" data-i18n="card2.link">View on GitHub →</a>
         </article>
 
-        <article class="card" data-reveal data-delay="200">
-          <div class="card__accent" style="background: var(--blush);"></div>
-          <h3>Photo Archive</h3>
-          <p>An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.</p>
+        <article class="card" data-reveal data-delay="300">
+          <h3 data-i18n="card3.title">Photo Archive</h3>
+          <p data-i18n="card3.desc">An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.</p>
           <div class="card__tags"><span>Photography</span></div>
         </article>
 
@@ -112,88 +104,111 @@
     </div>
   </section>
 
-  <!-- ─── Gallery ──────────────────────────────────────────── -->
-  <section id="gallery">
+  <!-- ─── Updates ───────────────────────────────────────────── -->
+  <section id="updates">
     <div class="section-inner" data-reveal>
-      <span class="section-label">Photography</span>
-      <h2>Through the lens</h2>
-      <p class="section-sub">Click any image to view it larger. Placeholder colours — real photos coming soon.</p>
-
-      <div class="masonry">
-        <!-- Each .photo block simulates a photo of varied height -->
-        <div class="photo" data-title="Golden Hour" style="background:#f5d5e0; height:260px;">
-          <div class="photo__overlay"><span>Golden Hour</span></div>
+      <span class="section-label" data-i18n="updates.label">Updates</span>
+      <h2 data-i18n="updates.heading">What's been happening</h2>
+      <p class="section-sub" data-i18n="updates.sub">Notes, links &amp; things worth sharing.</p>
+      <div class="timeline-carousel">
+        <button class="nav-btn nav-btn--timeline" id="timelinePrev" aria-label="Previous" data-i18n-aria="aria.timeline-prev">&#8592;</button>
+        <div class="timeline-window">
+          <div class="timeline" id="timeline"></div>
         </div>
-        <div class="photo" data-title="Forest Path" style="background:#d5e8d5; height:340px;">
-          <div class="photo__overlay"><span>Forest Path</span></div>
-        </div>
-        <div class="photo" data-title="Still Water" style="background:#d5e8f5; height:200px;">
-          <div class="photo__overlay"><span>Still Water</span></div>
-        </div>
-        <div class="photo" data-title="Morning Mist" style="background:#e8d5f5; height:300px;">
-          <div class="photo__overlay"><span>Morning Mist</span></div>
-        </div>
-        <div class="photo" data-title="City Lights" style="background:#f5e8d5; height:220px;">
-          <div class="photo__overlay"><span>City Lights</span></div>
-        </div>
-        <div class="photo" data-title="Quiet Street" style="background:#f5d5e8; height:360px;">
-          <div class="photo__overlay"><span>Quiet Street</span></div>
-        </div>
-        <div class="photo" data-title="Open Sky" style="background:#d5f5e8; height:240px;">
-          <div class="photo__overlay"><span>Open Sky</span></div>
-        </div>
-        <div class="photo" data-title="Harbour Blues" style="background:#d5ddf5; height:310px;">
-          <div class="photo__overlay"><span>Harbour Blues</span></div>
-        </div>
-        <div class="photo" data-title="Autumn Walk" style="background:#f5f0d5; height:280px;">
-          <div class="photo__overlay"><span>Autumn Walk</span></div>
-        </div>
+        <button class="nav-btn nav-btn--timeline" id="timelineNext" aria-label="Next" data-i18n-aria="aria.timeline-next">&#8594;</button>
       </div>
     </div>
   </section>
 
-  <!-- ─── Lightbox ─────────────────────────────────────────── -->
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox__close" id="lightboxClose" aria-label="Close">✕</button>
-    <div class="lightbox__content" id="lightboxContent"></div>
-    <p class="lightbox__title" id="lightboxTitle"></p>
-  </div>
+  <!-- ─── Gallery ──────────────────────────────────────────── -->
+  <section id="gallery">
+    <div class="section-inner" data-reveal>
+      <span class="section-label" data-i18n="gallery.label">Photography</span>
+      <h2 data-i18n="gallery.heading">Through the lens</h2>
+      <p class="section-sub" data-i18n="gallery.sub">Placeholder colours — real photos coming soon.</p>
+
+      <div class="slideshow" id="slideshow" aria-roledescription="carousel">
+        <div class="slideshow__track" id="slideshowTrack">
+          <div class="slide" data-title="Golden Hour"   style="background:#f5d5e0;"><span class="slide__label">Golden Hour</span></div>
+          <div class="slide" data-title="Forest Path"   style="background:#d5e8d5;"><span class="slide__label">Forest Path</span></div>
+          <div class="slide" data-title="Still Water"   style="background:#d5e8f5;"><span class="slide__label">Still Water</span></div>
+          <div class="slide" data-title="Morning Mist"  style="background:#e8d5f5;"><span class="slide__label">Morning Mist</span></div>
+          <div class="slide" data-title="City Lights"   style="background:#f5e8d5;"><span class="slide__label">City Lights</span></div>
+          <div class="slide" data-title="Quiet Street"  style="background:#f5d5e8;"><span class="slide__label">Quiet Street</span></div>
+          <div class="slide" data-title="Open Sky"      style="background:#d5f5e8;"><span class="slide__label">Open Sky</span></div>
+          <div class="slide" data-title="Harbour Blues" style="background:#d5ddf5;"><span class="slide__label">Harbour Blues</span></div>
+          <div class="slide" data-title="Autumn Walk"   style="background:#f5f0d5;"><span class="slide__label">Autumn Walk</span></div>
+        </div>
+
+        <button class="nav-btn nav-btn--slide prev" id="slidePrev" aria-label="Previous" data-i18n-aria="aria.slide-prev">&#8592;</button>
+        <button class="nav-btn nav-btn--slide next" id="slideNext" aria-label="Next" data-i18n-aria="aria.slide-next">&#8594;</button>
+
+        <div class="slideshow__dots" id="slideDots" role="tablist"></div>
+      </div>
+    </div>
+  </section>
 
   <!-- ─── Contact ──────────────────────────────────────────── -->
   <section id="contact">
-    <div class="section-inner section-inner--narrow" data-reveal>
-      <span class="section-label">Contact</span>
-      <h2>Say hello</h2>
-      <p class="section-sub">This form is a static mockup — drop me an email directly for now.</p>
-
-      <form class="contact-form" onsubmit="return false;">
+    <div class="section-inner section-inner--narrow">
+      <span class="section-label" data-reveal data-i18n="contact.label">Contact</span>
+      <div class="hello-heading">
+        <div class="cyclops" id="cyclops" aria-hidden="true">
+          <div class="cyclops__lashes" id="cyclopsLashes">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+          <div class="cyclops__eyeball">
+            <div class="cyclops__lid" id="cyclopsLid"></div>
+            <div class="cyclops__gaze" id="cyclopsGaze">
+              <div class="cyclops__iris"></div>
+              <div class="cyclops__pupil"></div>
+              <div class="cyclops__shine"></div>
+            </div>
+          </div>
+        </div>
+        <h2 data-reveal data-i18n="contact.heading">Say hello</h2>
+      </div>
+      <form class="contact-form" data-reveal onsubmit="return false;">
         <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" placeholder="Your name" autocomplete="off" />
+          <label for="name" data-i18n="form.name.label">Name</label>
+          <input type="text" id="name" placeholder="Your name" autocomplete="off" data-i18n-placeholder="form.name.placeholder" />
         </div>
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="your@email.com" autocomplete="off" />
+          <label for="email" data-i18n="form.email.label">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="off" data-i18n-placeholder="form.email.placeholder" />
         </div>
         <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" rows="5" placeholder="What's on your mind?"></textarea>
+          <label for="message" data-i18n="form.msg.label">Message</label>
+          <textarea id="message" rows="8" placeholder="What's on your mind?" data-i18n-placeholder="form.msg.placeholder"></textarea>
         </div>
-        <button type="submit" class="btn" id="submitBtn">Send message</button>
-        <p class="form-note" id="formNote" hidden>✓ Thanks! (This is a mockup — no message was actually sent.)</p>
+        <button type="submit" class="btn" id="submitBtn" data-i18n="form.submit">Send message</button>
+        <p class="form-note" id="formNote" hidden data-i18n="form.note">✓ Thanks! (This is a mockup — no message was actually sent.)</p>
       </form>
     </div>
   </section>
 
   <!-- ─── Footer ───────────────────────────────────────────── -->
   <footer>
-    <p>© 2026 isiemant · Built with curiosity &amp; soft pastels</p>
+    <p data-i18n="footer.copy">© 2026 isiemant · Built with curiosity &amp; soft pastels</p>
     <p class="footer-sub">
-      Source at
+      <span data-i18n="footer.source">Source at</span>
       <a href="https://github.com/isiemant/website" target="_blank" rel="noopener">isiemant/website</a>
     </p>
   </footer>
 
+  <!-- ─── Story Modal ───────────────────────────────────────── -->
+  <dialog class="story-modal" id="storyModal" aria-label="About me story">
+    <button class="story-modal__close" id="storyClose" aria-label="Close" data-i18n-aria="aria.story-close">✕</button>
+    <div class="story-slideshow">
+      <div class="story-track" id="storyTrack"></div>
+      <button class="nav-btn nav-btn--slide prev" id="storyPrev" aria-label="Previous" data-i18n-aria="aria.story-prev">&#8592;</button>
+      <button class="nav-btn nav-btn--slide next" id="storyNext" aria-label="Next" data-i18n-aria="aria.story-next">&#8594;</button>
+      <div class="slideshow__dots" id="storyDots" role="tablist"></div>
+    </div>
+  </dialog>
+
+  <script src="translations.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
