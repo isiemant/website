@@ -10,7 +10,7 @@
 ───────────────────────────────────────────────────────────── */
 
 import { TRANSLATIONS } from './translations.js';
-import { initSwipe }    from './utils.js';
+import { initSwipe, track } from './utils.js';
 
 // ── Module-level state ────────────────────────────────────────
 
@@ -33,11 +33,11 @@ export function buildStorySlides(lang) {
   const t      = TRANSLATIONS[lang];
   storySlides  = t.story;
 
-  const track  = document.getElementById('storyTrack');
+  const storyTrack = document.getElementById('storyTrack');
   const dotsEl = document.getElementById('storyDots');
-  if (!track || !dotsEl) return;
+  if (!storyTrack || !dotsEl) return;
 
-  track.innerHTML  = '';
+  storyTrack.innerHTML = '';
   dotsEl.innerHTML = '';
 
   // Slides — built with createElement throughout (no innerHTML) for consistency.
@@ -63,7 +63,7 @@ export function buildStorySlides(lang) {
     bodyEl.textContent = s.body;
 
     slide.append(labelEl, emojiEl, titleEl, bodyEl);
-    track.appendChild(slide);
+    storyTrack.appendChild(slide);
   });
 
   // Dots
@@ -87,7 +87,7 @@ export function initStoryModal() {
   const closeBtn = document.getElementById('storyClose');
   const prevBtn  = document.getElementById('storyPrev');
   const nextBtn  = document.getElementById('storyNext');
-  const track    = document.getElementById('storyTrack');
+  const storyTrackEl = document.getElementById('storyTrack');
   if (!modal) return;
 
   // ── Core navigation ────────────────────────────────────
@@ -108,10 +108,10 @@ export function initStoryModal() {
 
   // ── Controls ──────────────────────────────────────────
 
-  prevBtn.addEventListener('click', () => storyGoToFn(currentIdx - 1));
-  nextBtn.addEventListener('click', () => storyGoToFn(currentIdx + 1));
+prevBtn.addEventListener('click', () => { track('story-prev'); storyGoToFn(currentIdx - 1); });
+    nextBtn.addEventListener('click', () => { track('story-next'); storyGoToFn(currentIdx + 1); });
 
-  initSwipe(track, dir =>
+  initSwipe(storyTrackEl, dir =>
     storyGoToFn(dir === 'left' ? currentIdx + 1 : currentIdx - 1)
   );
 
@@ -123,8 +123,8 @@ export function initStoryModal() {
 
   // ── Open / close ───────────────────────────────────────
 
-  openBtn.addEventListener('click', () => { storyGoToFn(0); modal.showModal(); });
-  closeBtn.addEventListener('click', () => modal.close());
+openBtn.addEventListener('click', () => { track('story-open'); storyGoToFn(0); modal.showModal(); });
+    closeBtn.addEventListener('click', () => { track('story-close'); modal.close(); });
 
   // Click on the backdrop (outside the dialog content) closes the modal.
   modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });

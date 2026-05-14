@@ -4,13 +4,13 @@
 ───────────────────────────────────────────────────────────── */
 
 import { SLIDE_INTERVAL } from './constants.js';
-import { initSwipe }      from './utils.js';
+import { initSwipe, track } from './utils.js';
 
 export function initSlideshow() {
-  const slideshowEl = document.getElementById('slideshow');
-  const track       = document.getElementById('slideshowTrack');
-  const dotsEl      = document.getElementById('slideDots');
-  const slides      = Array.from(track.querySelectorAll('.slide'));
+  const slideshowEl    = document.getElementById('slideshow');
+  const slideshowTrack = document.getElementById('slideshowTrack');
+  const dotsEl         = document.getElementById('slideDots');
+  const slides         = Array.from(slideshowTrack.querySelectorAll('.slide'));
   const total       = slides.length;
   let   currentIdx  = 0;
   let   autoTimer   = null;
@@ -30,7 +30,7 @@ export function initSlideshow() {
 
   function goTo(idx) {
     currentIdx = (idx + total) % total;
-    track.style.transform = `translateX(-${currentIdx * 100}%)`;
+    slideshowTrack.style.transform = `translateX(-${currentIdx * 100}%)`;
     dotsEl.querySelectorAll('.slideshow__dot').forEach((d, i) =>
       d.classList.toggle('active', i === currentIdx)
     );
@@ -47,8 +47,8 @@ export function initSlideshow() {
 
   // ── Controls ──────────────────────────────────────────────
 
-  document.getElementById('slidePrev').addEventListener('click', () => { goTo(currentIdx - 1); startAuto(); });
-  document.getElementById('slideNext').addEventListener('click', () => { goTo(currentIdx + 1); startAuto(); });
+  document.getElementById('slidePrev').addEventListener('click', () => { track('slideshow-prev'); goTo(currentIdx - 1); startAuto(); });
+  document.getElementById('slideNext').addEventListener('click', () => { track('slideshow-next'); goTo(currentIdx + 1); startAuto(); });
 
   // Pause auto-play while the user is hovering.
   slideshowEl.addEventListener('mouseenter', stopAuto);
@@ -56,6 +56,7 @@ export function initSlideshow() {
 
   // Swipe support via shared utility.
   initSwipe(slideshowEl, dir => {
+    track('slideshow-swipe');
     goTo(dir === 'left' ? currentIdx + 1 : currentIdx - 1);
     startAuto();
   });

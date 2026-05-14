@@ -9,6 +9,8 @@
 
 import { SWIPE_THRESHOLD, REVEAL_THRESHOLD } from './constants.js';
 
+export const track = (name) => window.umami?.track(name);
+
 
 // ── Touch-swipe helper ───────────────────────────────────────
 

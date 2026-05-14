@@ -6,7 +6,7 @@
      · Section-label flash on smooth-scroll target
      · Escape key to close
 ───────────────────────────────────────────────────────────── */
-
+import { track } from './utils.js';
 export function initSidebar() {
   const hamburger    = document.getElementById('hamburger');
   const sidebar      = document.getElementById('sidebar');
@@ -19,12 +19,14 @@ export function initSidebar() {
     sidebar.classList.add('open');
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
+    track('sidebar-open');
   }
 
   function closeSidebar() {
     sidebar.classList.remove('open');
     overlay.classList.remove('active');
     document.body.style.overflow = '';
+    track('sidebar-close');
   }
 
   hamburger.addEventListener('click', openSidebar);

@@ -12,7 +12,7 @@
 ───────────────────────────────────────────────────────────── */
 
 import { CAROUSEL_GAP, CAROUSEL_TRANSITION_MS, CAROUSEL_BUSY_LOCK_MS } from './constants.js';
-import { initSwipe } from './utils.js';
+import { initSwipe, track } from './utils.js';
 
 // ── Shared state updated by i18n.js ──────────────────────────
 
@@ -35,10 +35,10 @@ export function carouselGoTo(page, animate) {
 // ── Carousel init ─────────────────────────────────────────────
 
 export function initCarousel() {
-  const track   = document.getElementById('timeline');
-  const prevBtn = document.getElementById('timelinePrev');
-  const nextBtn = document.getElementById('timelineNext');
-  if (!track || !prevBtn || !nextBtn) return;
+  const timelineEl = document.getElementById('timeline');
+  const prevBtn    = document.getElementById('timelinePrev');
+  const nextBtn    = document.getElementById('timelineNext');
+  if (!timelineEl || !prevBtn || !nextBtn) return;
 
   let page = 0;
   let busy = false;
@@ -56,13 +56,13 @@ export function initCarousel() {
   }
 
   function cardWidth() {
-    const win = track.closest('.timeline-window') || track;
+    const win = timelineEl.closest('.timeline-window') || timelineEl;
     return (win.clientWidth - CAROUSEL_GAP * (perPage() - 1)) / perPage();
   }
 
   function sizeCards() {
     const w = cardWidth();
-    track.querySelectorAll('.timeline-item').forEach(c => {
+    timelineEl.querySelectorAll('.timeline-item').forEach(c => {
       c.style.flex = `0 0 ${w}px`;
     });
   }
@@ -78,10 +78,10 @@ export function initCarousel() {
     page = Math.max(0, Math.min(targetPage, totalPages() - 1));
 
     const offset = page * perPage() * (cardWidth() + CAROUSEL_GAP);
-    track.style.transition = animate
+    timelineEl.style.transition = animate
       ? `transform ${CAROUSEL_TRANSITION_MS}ms cubic-bezier(0.34, 1.56, 0.64, 1)`
       : 'none';
-    track.style.transform = `translateX(-${offset}px)`;
+    timelineEl.style.transform = `translateX(-${offset}px)`;
 
     if (animate) {
       busy = true;
@@ -94,8 +94,8 @@ export function initCarousel() {
 
   // ── Controls ─────────────────────────────────────────────
 
-  prevBtn.addEventListener('click', () => goTo(page - 1, true));
-  nextBtn.addEventListener('click', () => goTo(page + 1, true));
+  prevBtn.addEventListener('click', () => { track('carousel-prev'); goTo(page - 1, true); });
+  nextBtn.addEventListener('click', () => { track('carousel-next'); goTo(page + 1, true); });
 
   // Arrow keys — active only when the updates section is in the viewport,
   // so they don't conflict with the photo slideshow arrows.
@@ -108,7 +108,8 @@ export function initCarousel() {
     }
   });
 
-  initSwipe(track, dir => {
+  initSwipe(timelineEl, dir => {
+    track('carousel-swipe');
     dir === 'left' ? goTo(page + 1, true) : goTo(page - 1, true);
   });
 

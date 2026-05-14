@@ -12,8 +12,7 @@
 ───────────────────────────────────────────────────────────── */
 
 import { TRANSLATIONS }                        from './translations.js';
-import { parseCSV }                            from './utils.js';
-import { revealObserver }                      from './utils.js';
+import { parseCSV, revealObserver, track }     from './utils.js';
 import { carouselGoTo, setTimelineItems }      from './carousel.js';
 import { buildStorySlides }                    from './story.js';
 
@@ -104,6 +103,7 @@ function buildProjects(lang) {
       a.target      = '_blank';
       a.rel         = 'noopener';
       a.textContent = item.linkLabel;
+      a.addEventListener('click', () => track('project-link-click'));
       article.appendChild(a);
     }
 
@@ -165,6 +165,7 @@ function buildTimeline(lang) {
       link.target      = '_blank';
       link.rel         = 'noopener';
       link.textContent = t['ui.read-more'];
+      link.addEventListener('click', () => track('timeline-link-click'));
       body.appendChild(link);
     }
 
@@ -233,6 +234,7 @@ export function initI18n() {
 
   form.addEventListener('submit', e => {
     e.preventDefault();
+    track('contact-form-submit');
     formSubmitted            = true;
     submitBtn.textContent    = TRANSLATIONS[currentLang]['ui.sent'];
     submitBtn.disabled       = true;
@@ -244,7 +246,9 @@ export function initI18n() {
   const langToggle = document.getElementById('langToggle');
   if (langToggle) {
     langToggle.addEventListener('click', () => {
-      applyLang(currentLang === 'en' ? 'de' : 'en');
+      const next = currentLang === 'en' ? 'de' : 'en';
+      track(`language-switch-${next}`);
+      applyLang(next);
     });
   }
 }
