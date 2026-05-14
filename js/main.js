@@ -23,7 +23,8 @@ import { initConsent, loadFonts }                from './consent.js';
 document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
 
 // ── Feature modules ───────────────────────────────────────────loadFonts();     // apply consent prefs before paint
-initConsent();   // show banner if first visitinitSidebar();
+initConsent();   // show banner if first visit
+initSidebar();
 initScroll();
 initSlideshow();
 initCarousel();

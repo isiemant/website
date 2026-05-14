@@ -19,7 +19,7 @@ function setConsent(prefs) {
 // ── Load Google Fonts dynamically ─────────────────────────────
 export function loadFonts() {
   const prefs = getConsent();
-  if (prefs && prefs.fonts === true) {
+  if (!prefs || prefs.fonts === true) {
     // Preconnects
     const pc1 = document.createElement('link');
     pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
