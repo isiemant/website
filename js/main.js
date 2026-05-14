@@ -22,7 +22,8 @@ import { initConsent, loadFonts }                from './consent.js';
 // inside buildProjects() in i18n.js after they are added to the DOM.
 document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
 
-// ── Feature modules ───────────────────────────────────────────loadFonts();     // apply consent prefs before paint
+// ── Feature modules ──────────────────────────────────────────
+loadFonts();     // apply consent prefs before paint
 initConsent();   // show banner if first visit
 initSidebar();
 initScroll();
