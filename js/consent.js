@@ -8,30 +8,49 @@ const STORAGE_KEY = 'consent';
 
 // ── Read / write helpers ──────────────────────────────────────
 function getConsent() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
-  catch { return null; }
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw === null) return null;
+    const parsed = JSON.parse(raw);
+    // Validate shape: must be an object with a boolean 'fonts' property
+    if (parsed && typeof parsed === 'object' && typeof parsed.fonts === 'boolean') {
+      return parsed;
+    }
+    // Malformed — treat as unset so banner shows again
+    localStorage.removeItem(STORAGE_KEY);
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 function setConsent(prefs) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs)); }
+  catch { /* storage unavailable (e.g. private browsing with storage blocked) */ }
 }
 
 // ── Load Google Fonts dynamically ─────────────────────────────
 export function loadFonts() {
   const prefs = getConsent();
   if (!prefs || prefs.fonts === true) {
-    // Preconnects
-    const pc1 = document.createElement('link');
-    pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
-    const pc2 = document.createElement('link');
-    pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = '';
-    // Font stylesheet
-    const link = document.createElement('link');
-    link.rel  = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&family=Nunito:wght@400;500;600;700;800&display=swap';
-    document.head.append(pc1, pc2, link);
+    // Remove fallback class first (defensive — ensures re-runs work correctly)
     document.body.classList.remove('no-custom-fonts');
-  } else if (prefs && prefs.fonts === false) {
+    // Avoid injecting duplicate link elements on re-runs
+    if (!document.querySelector('link[data-gfonts]')) {
+      const pc1 = document.createElement('link');
+      pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
+      const pc2 = document.createElement('link');
+      pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = '';
+      const link = document.createElement('link');
+      link.rel       = 'stylesheet';
+      link.setAttribute('data-gfonts', '');
+      link.href = 'https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&family=Nunito:wght@400;500;600;700;800&display=swap';
+      document.head.append(pc1, pc2, link);
+    }
+  } else {
+    // Explicitly declined — remove any injected font link and apply fallback class
+    const existing = document.querySelector('link[data-gfonts]');
+    if (existing) existing.remove();
     document.body.classList.add('no-custom-fonts');
   }
 }
