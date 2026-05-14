@@ -1,0 +1,10 @@
+# data/projects.csv
+# Columns: title_en title_de desc_en desc_de tags url link_en link_de
+# tags = pipe-separated e.g. HTML|CSS|JS
+# Wrap cells with commas in double quotes
+# Row order = display order
+title_en,title_de,desc_en,desc_de,tags,url,link_en,link_de
+This Website,Diese Website,"A personal site built from scratch as a learning project — pure HTML, CSS & JavaScript. No frameworks, just fundamentals.","Eine persönliche Website von Grund auf als Lernprojekt — reines HTML, CSS & JavaScript. Keine Frameworks, nur Grundlagen.",HTML|CSS|JS,,,
+Website Repository,Website-Repository,"The source code for this very site — open for exploration, learning, and iteration as the project grows.","Der Quellcode dieser Website — offen zum Entdecken, Lernen und Weiterentwickeln.",HTML|CSS|JS|Git,https://github.com/isiemant/website,View on GitHub →,Auf GitHub ansehen →
+Photo Archive,Fotoarchiv,"An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.","Ein fortlaufendes persönliches Fotoarchiv — Landschaften, Straßenszenen und alles, was mein Auge einfängt.",Photography,,,
+Photo Archive 2,Fotoarchiv,"An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.","Ein fortlaufendes persönliches Fotoarchiv — Landschaften, Straßenszenen und alles, was mein Auge einfängt.",Photography,https://google.de,View on Google →,Auf Google ansehen →

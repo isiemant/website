@@ -1,12 +1,15 @@
 /* ─────────────────────────────────────────────────────────────
-   translations.js — EN / DE string catalogue
+   js/translations.js — EN / DE string catalogue
    Structure: one const per section, each with { en, de }.
-   To add a language: add the key to every section + the merge.
-   To add a project: add card keys to S_PROJECTS + an <article>
-     in index.html with matching data-i18n attributes.
-   To add an update: append an object to both timeline arrays
-     in S_TIMELINE — script.js rebuilds the UI automatically.
-   Loaded before script.js so TRANSLATIONS is always available.
+
+   ► To add a PROJECT : edit  data/projects.csv  (one row = one card)
+   ► To add an UPDATE : edit  data/updates.csv   (one row = one card)
+
+   The CSVs are fetched at runtime by i18n.js and overwrite the
+   fallback arrays below.  If the fetch fails (e.g. file:// origin)
+   the hard-coded arrays here are used automatically.
+
+   ► To add a language: add the key to every section + the merge.
 ───────────────────────────────────────────────────────────── */
 
 
@@ -81,37 +84,63 @@ const S_ABOUT = {
 
 /* ══════════════════════════════════════════════════════════
    PROJECTS
-   To add a project: add card<N>.title / card<N>.desc here,
-   then add a matching <article data-i18n> block in index.html.
+   FALLBACK data — normally overwritten by data/projects.csv at runtime.
+   Fields: title · desc · tags (pipe-separated) · url · linkLabel
 ══════════════════════════════════════════════════════════ */
 const S_PROJECTS = {
   en: {
     'projects.label':   'Current projects',
     'projects.heading': "Things I've built",
-
-    'card1.title': 'This Website',
-    'card1.desc':  'A personal site built from scratch as a learning project — pure HTML, CSS & JavaScript. No frameworks, just fundamentals.',
-
-    'card2.title': 'Website Repository',
-    'card2.desc':  'The source code for this very site — open for exploration, learning, and iteration as the project grows.',
-    'card2.link':  'View on GitHub →',
-
-    'card3.title': 'Photo Archive',
-    'card3.desc':  'An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.',
+    projects: [
+      {
+        title:     'This Website',
+        desc:      'A personal site built from scratch as a learning project — pure HTML, CSS & JavaScript. No frameworks, just fundamentals.',
+        tags:      'HTML|CSS|JS',
+        url:       '',
+        linkLabel: '',
+      },
+      {
+        title:     'Website Repository',
+        desc:      'The source code for this very site — open for exploration, learning, and iteration as the project grows.',
+        tags:      'HTML|CSS|JS|Git',
+        url:       'https://github.com/isiemant/website',
+        linkLabel: 'View on GitHub →',
+      },
+      {
+        title:     'Photo Archive',
+        desc:      'An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.',
+        tags:      'Photography',
+        url:       '',
+        linkLabel: '',
+      },
+    ],
   },
   de: {
     'projects.label':   'Aktuelle Projekte',
     'projects.heading': 'Was ich gebaut habe',
-
-    'card1.title': 'Diese Website',
-    'card1.desc':  'Eine persönliche Website von Grund auf als Lernprojekt — reines HTML, CSS & JavaScript. Keine Frameworks, nur Grundlagen.',
-
-    'card2.title': 'Website-Repository',
-    'card2.desc':  'Der Quellcode dieser Website — offen zum Entdecken, Lernen und Weiterentwickeln.',
-    'card2.link':  'Auf GitHub ansehen →',
-
-    'card3.title': 'Fotoarchiv',
-    'card3.desc':  'Ein fortlaufendes persönliches Fotoarchiv — Landschaften, Straßenszenen und alles, was mein Auge einfängt.',
+    projects: [
+      {
+        title:     'Diese Website',
+        desc:      'Eine persönliche Website von Grund auf als Lernprojekt — reines HTML, CSS & JavaScript. Keine Frameworks, nur Grundlagen.',
+        tags:      'HTML|CSS|JS',
+        url:       '',
+        linkLabel: '',
+      },
+      {
+        title:     'Website-Repository',
+        desc:      'Der Quellcode dieser Website — offen zum Entdecken, Lernen und Weiterentwickeln.',
+        tags:      'HTML|CSS|JS|Git',
+        url:       'https://github.com/isiemant/website',
+        linkLabel: 'Auf GitHub ansehen →',
+      },
+      {
+        title:     'Fotoarchiv',
+        desc:      'Ein fortlaufendes persönliches Fotoarchiv — Landschaften, Straßenszenen und alles, was mein Auge einfängt.',
+        tags:      'Fotografie',
+        url:       '',
+        linkLabel: '',
+      },
+    ],
   },
 };
 
@@ -244,7 +273,7 @@ const S_UI = {
 
 /* ══════════════════════════════════════════════════════════
    TIMELINE  (Updates section cards)
-   To add an update: append an object to BOTH arrays below.
+   FALLBACK data — normally overwritten by data/updates.csv at runtime.
    Fields: date · topic · title · description · url · thumbnail
 ══════════════════════════════════════════════════════════ */
 const S_TIMELINE = {
@@ -397,12 +426,12 @@ const S_STORY = {
 
 
 /* ══════════════════════════════════════════════════════════
-   MERGE — shape consumed by script.js stays identical.
+   MERGE — shape consumed by i18n.js stays identical.
    To add a language: add the key to every section above,
    then add a new entry here, e.g.:
      fr: { ...S_NAV.fr, ...S_HERO.fr, … }
 ══════════════════════════════════════════════════════════ */
-const TRANSLATIONS = {
+export const TRANSLATIONS = {
   en: {
     ...S_NAV.en, ...S_HERO.en, ...S_ABOUT.en, ...S_PROJECTS.en,
     ...S_UPDATES.en, ...S_GALLERY.en, ...S_CONTACT.en, ...S_FOOTER.en,

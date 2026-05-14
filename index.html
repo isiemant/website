@@ -79,28 +79,8 @@
     <div class="section-inner" data-reveal>
       <span class="section-label" data-i18n="projects.label">Current projects</span>
       <h2 data-i18n="projects.heading">Things I've built</h2>
-      <div class="projects__grid">
-
-        <article class="card" data-reveal data-delay="100">
-          <h3 data-i18n="card1.title">This Website</h3>
-          <p data-i18n="card1.desc">A personal site built from scratch as a learning project — pure HTML, CSS &amp; JavaScript. No frameworks, just fundamentals.</p>
-          <div class="card__tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-        </article>
-
-        <article class="card" data-reveal data-delay="200">
-          <h3 data-i18n="card2.title">Website Repository</h3>
-          <p data-i18n="card2.desc">The source code for this very site — open for exploration, learning, and iteration as the project grows.</p>
-          <div class="card__tags"><span>HTML</span><span>CSS</span><span>JS</span><span>Git</span></div>
-          <a class="card__link" href="https://github.com/isiemant/website" target="_blank" rel="noopener" data-i18n="card2.link">View on GitHub →</a>
-        </article>
-
-        <article class="card" data-reveal data-delay="300">
-          <h3 data-i18n="card3.title">Photo Archive</h3>
-          <p data-i18n="card3.desc">An ongoing personal archive of photography — landscapes, street scenes, and anything that catches my eye.</p>
-          <div class="card__tags"><span>Photography</span></div>
-        </article>
-
-      </div>
+      <!-- Cards are injected by buildProjects() in script.js (data from data/projects.csv) -->
+      <div class="projects__grid"></div>
     </div>
   </section>
 
@@ -208,7 +188,6 @@
     </div>
   </dialog>
 
-  <script src="translations.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
