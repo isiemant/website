@@ -1,9 +1,0 @@
-# data/updates.csv
-# Columns: date_en date_de topic_en topic_de title_en title_de description_en description_de url thumbnail
-# Row order = display order (top = newest / leftmost card)
-# Wrap cells with commas in double quotes
-date_en,date_de,topic_en,topic_de,title_en,title_de,description_en,description_de,url,thumbnail
-May 2026,Mai 2026,AI Coding,KI-Coding,Building this site with Claude,Diese Website mit Claude bauen,"How I used Claude Code to go from zero to a full cartoon-themed personal site in one session.","Wie ich Claude Code genutzt habe, um in einer einzigen Session eine komplette Cartoon-Website zu erstellen.",https://github.com/isiemant/website,https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80
-Apr 2026,Apr. 2026,Photography,Fotografie,Golden hour walk,Goldene-Stunde-Spaziergang,"A short series of shots taken during a late-afternoon walk. Shot on a mirrorless kit lens.","Eine kurze Fotoserie, aufgenommen bei einem Spaziergang am späten Nachmittag. Mit einem Einsteiger-Zoomobjektiv.",,https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80
-Mar 2026,März 2026,Marketing,Marketing,What I learned about landing pages,Was ich über Landing Pages gelernt habe,"Reading through a dozen high-converting landing pages and noting the patterns that keep showing up.","Ein Dutzend erfolgreiche Landing Pages analysiert und die wiederkehrenden Muster notiert.",https://github.com/isiemant/website,https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80
-Feb 2026,Feb. 2026,AI Coding,KI-Coding,Trying out Cursor + Claude,Cursor + Claude ausprobiert,"First impressions after a week of pair-programming with AI editors on small web projects.","Erste Eindrücke nach einer Woche Pair-Programming mit KI-Editoren bei kleinen Webprojekten.",,https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&q=80

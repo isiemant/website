@@ -14,7 +14,7 @@ import { initSlideshow }                         from './slideshow.js';
 import { initCarousel }                          from './carousel.js';
 import { initStoryModal }                        from './story.js';
 import { initCyclops }                           from './cyclops.js';
-import { loadContentCSVs, applyLang, initI18n }  from './i18n.js';
+import { loadContentData, applyLang, initI18n }  from './i18n.js';
 import { initConsent, loadFonts }                from './consent.js';
 
 // ── Scroll-reveal — static elements ──────────────────────────
@@ -34,10 +34,10 @@ initCyclops();
 initI18n();
 
 // ── Initialisation ────────────────────────────────────────────
-// Fetch CSV data first so the correct content is in place before
+// Fetch Markdown data first so the correct content is in place before
 // the first applyLang() renders the UI.  Falls back to the built-in
 // TRANSLATIONS data automatically if the fetch fails (e.g. offline).
 (async () => {
-  await loadContentCSVs();
+  await loadContentData();
   applyLang(localStorage.getItem('lang') || 'en');
 })();

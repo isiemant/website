@@ -1,7 +1,6 @@
 /* ─────────────────────────────────────────────────────────────
-   js/story.js — "Read my story" modal with slides
-   Handles: slide navigation, dot indicators, swipe, keyboard,
-            open/close, backdrop click-to-close.
+   js/story.js — "Read my story" modal — timeline edition
+   Now → past, 7 stations, dark gradients, slide+fade transition.
 
    Exports:
      initStoryModal()         — wire up DOM, called once from main.js
@@ -14,41 +13,47 @@ import { initSwipe, track } from './utils.js';
 
 // ── Module-level state ────────────────────────────────────────
 
-let storySlides  = [];
-let currentIdx   = 0;
+let storySlides = [];
+let currentIdx  = 0;
+let isAnimating = false;
 
-// initStoryModal() replaces this with the real implementation once the DOM
-// is ready, so buildStorySlides() can safely call it during language changes.
+// Filled in by initStoryModal so buildStorySlides can call it safely.
 let storyGoToFn = () => {};
+
+// ── UI updater ────────────────────────────────────────────────
+
+function updateUI() {
+  const fill    = document.getElementById('storyFill');
+  const counter = document.getElementById('storyCounter');
+  const total   = storySlides.length;
+  if (!total) return;
+
+  if (fill)    fill.style.width = total > 1 ? `${(currentIdx / (total - 1)) * 100}%` : '100%';
+  if (counter) {
+    const year = storySlides[currentIdx]?.year ?? '';
+    counter.textContent = `${year} · ${currentIdx + 1} / ${total}`;
+  }
+}
 
 // ── Slide builder (called by i18n.js) ─────────────────────────
 
-/**
- * (Re)build the story slides and dots for the given language,
- * then reset to the first slide.
- *
- * @param {string} lang - 'en' or 'de'
- */
 export function buildStorySlides(lang) {
-  const t      = TRANSLATIONS[lang];
-  storySlides  = t.story;
+  const t     = TRANSLATIONS[lang];
+  storySlides = t.story;
 
-  const storyTrack = document.getElementById('storyTrack');
-  const dotsEl = document.getElementById('storyDots');
-  if (!storyTrack || !dotsEl) return;
+  const trackEl = document.getElementById('storyTrack');
+  if (!trackEl) return;
 
-  storyTrack.innerHTML = '';
-  dotsEl.innerHTML = '';
+  trackEl.innerHTML = '';
 
-  // Slides — built with createElement throughout (no innerHTML) for consistency.
-  storySlides.forEach(s => {
+  storySlides.forEach((s, i) => {
     const slide = document.createElement('div');
-    slide.className        = 'story-slide';
+    slide.className = 'story-slide' + (i === 0 ? ' is-active' : '');
     slide.style.background = s.color;
 
-    const labelEl       = document.createElement('span');
-    labelEl.className   = 'story-slide__label';
-    labelEl.textContent = s.label;
+    const yearEl       = document.createElement('div');
+    yearEl.className   = 'story-slide__year';
+    yearEl.textContent = s.year;
 
     const emojiEl       = document.createElement('div');
     emojiEl.className   = 'story-slide__emoji';
@@ -58,25 +63,20 @@ export function buildStorySlides(lang) {
     titleEl.className   = 'story-slide__title';
     titleEl.textContent = s.title;
 
+    const tagEl       = document.createElement('span');
+    tagEl.className   = 'story-slide__tag';
+    tagEl.textContent = s.label;
+
     const bodyEl       = document.createElement('p');
     bodyEl.className   = 'story-slide__body';
     bodyEl.textContent = s.body;
 
-    slide.append(labelEl, emojiEl, titleEl, bodyEl);
-    storyTrack.appendChild(slide);
+    slide.append(yearEl, emojiEl, titleEl, tagEl, bodyEl);
+    trackEl.appendChild(slide);
   });
 
-  // Dots
-  storySlides.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'slideshow__dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('role', 'tab');
-    dot.setAttribute('aria-label', `${t['ui.slide']} ${i + 1}`);
-    dot.addEventListener('click', () => storyGoToFn(i));
-    dotsEl.appendChild(dot);
-  });
-
-  storyGoToFn(0);
+  currentIdx = 0;
+  updateUI();
 }
 
 // ── Modal init ────────────────────────────────────────────────
@@ -87,45 +87,92 @@ export function initStoryModal() {
   const closeBtn = document.getElementById('storyClose');
   const prevBtn  = document.getElementById('storyPrev');
   const nextBtn  = document.getElementById('storyNext');
-  const storyTrackEl = document.getElementById('storyTrack');
+  const trackEl  = document.getElementById('storyTrack');
   if (!modal) return;
 
-  // ── Core navigation ────────────────────────────────────
+  storyGoToFn = function goTo(newIdx, dir) {
+    const slides = trackEl.querySelectorAll('.story-slide');
+    if (!slides.length || isAnimating) return;
 
-  storyGoToFn = function goTo(idx) {
-    const trackEl = document.getElementById('storyTrack');
-    const dotsEl  = document.getElementById('storyDots');
+    const total = storySlides.length;
+    const next  = ((newIdx % total) + total) % total;
+    if (next === currentIdx) return;
 
-    currentIdx = (idx + storySlides.length) % storySlides.length;
+    const direction  = dir !== undefined ? dir : (next > currentIdx ? 'forward' : 'back');
+    const enterClass = direction === 'forward' ? 'is-entering-right' : 'is-entering-left';
+    const leaveClass = direction === 'forward' ? 'is-leaving-left'   : 'is-leaving-right';
 
-    if (trackEl) trackEl.style.transform = `translateX(-${currentIdx * 100}%)`;
-    if (dotsEl) {
-      dotsEl.querySelectorAll('.slideshow__dot').forEach((d, i) =>
-        d.classList.toggle('active', i === currentIdx)
-      );
-    }
+    const incoming = slides[next];
+    const outgoing = slides[currentIdx];
+
+    isAnimating = true;
+
+    // Position incoming off-screen instantly (suppress transition)
+    incoming.style.transition = 'none';
+    incoming.classList.remove('is-active', 'is-leaving-left', 'is-leaving-right', 'is-entering-left', 'is-entering-right');
+    incoming.classList.add(enterClass);
+
+    // Force reflow so the starting position is painted before we animate
+    incoming.offsetHeight; // eslint-disable-line no-unused-expressions
+
+    // Restore transition and animate incoming to active
+    incoming.style.transition = '';
+    incoming.classList.remove(enterClass);
+    incoming.classList.add('is-active');
+
+    // Animate outgoing away
+    outgoing.classList.remove('is-active');
+    outgoing.classList.add(leaveClass);
+
+    currentIdx = next;
+    updateUI();
+
+    const onEnd = () => {
+      outgoing.removeEventListener('transitionend', onEnd);
+      outgoing.classList.remove(leaveClass);
+      isAnimating = false;
+    };
+    outgoing.addEventListener('transitionend', onEnd);
   };
 
-  // ── Controls ──────────────────────────────────────────
+  prevBtn.addEventListener('click', () => { track('story-prev'); storyGoToFn(currentIdx - 1, 'back'); });
+  nextBtn.addEventListener('click', () => { track('story-next'); storyGoToFn(currentIdx + 1, 'forward'); });
 
-prevBtn.addEventListener('click', () => { track('story-prev'); storyGoToFn(currentIdx - 1); });
-    nextBtn.addEventListener('click', () => { track('story-next'); storyGoToFn(currentIdx + 1); });
-
-  initSwipe(storyTrackEl, dir =>
-    storyGoToFn(dir === 'left' ? currentIdx + 1 : currentIdx - 1)
+  initSwipe(trackEl, dir =>
+    storyGoToFn(
+      dir === 'left' ? currentIdx + 1 : currentIdx - 1,
+      dir === 'left' ? 'forward' : 'back'
+    )
   );
 
-  // Arrow keys inside the open modal.
   modal.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft')  storyGoToFn(currentIdx - 1);
-    if (e.key === 'ArrowRight') storyGoToFn(currentIdx + 1);
+    if (e.key === 'ArrowLeft')  storyGoToFn(currentIdx - 1, 'back');
+    if (e.key === 'ArrowRight') storyGoToFn(currentIdx + 1, 'forward');
   });
 
-  // ── Open / close ───────────────────────────────────────
+  openBtn.addEventListener('click', () => {
+    track('story-open');
+    // Reset all slides to initial state
+    const slides = trackEl.querySelectorAll('.story-slide');
+    slides.forEach((s, i) => {
+      s.classList.remove('is-active', 'is-leaving-left', 'is-leaving-right', 'is-entering-left', 'is-entering-right');
+      if (i === 0) s.classList.add('is-active');
+    });
+    currentIdx  = 0;
+    isAnimating = false;
+    updateUI();
+    modal.showModal();
 
-openBtn.addEventListener('click', () => { track('story-open'); storyGoToFn(0); modal.showModal(); });
-    closeBtn.addEventListener('click', () => { track('story-close'); modal.close(); });
+    // Nudge nav buttons briefly after modal animation settles
+    const storyNav = document.getElementById('storyNav');
+    if (storyNav) {
+      setTimeout(() => {
+        storyNav.classList.add('is-nudging');
+        storyNav.addEventListener('animationend', () => storyNav.classList.remove('is-nudging'), { once: true });
+      }, 200);
+    }
+  });
 
-  // Click on the backdrop (outside the dialog content) closes the modal.
+  closeBtn.addEventListener('click', () => { track('story-close'); modal.close(); });
   modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
 }

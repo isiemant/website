@@ -1,10 +1,9 @@
 /* ─────────────────────────────────────────────────────────────
    js/utils.js — Shared helpers
    Exports:
-     initSwipe(el, onSwipe)  — unified touch-swipe listener
-     splitCSVRow(row)        — CSV row tokeniser (quoted fields)
-     parseCSV(text)          — full CSV text → array of objects
-     revealObserver          — shared IntersectionObserver for scroll-reveal
+     initSwipe(el, onSwipe)          — unified touch-swipe listener
+     parseMarkdownFrontMatter(text)  — YAML front matter → plain object
+     revealObserver                  — shared IntersectionObserver for scroll-reveal
 ───────────────────────────────────────────────────────────── */
 
 import { SWIPE_THRESHOLD, REVEAL_THRESHOLD } from './constants.js';
@@ -38,65 +37,24 @@ export function initSwipe(el, onSwipe) {
 }
 
 
-// ── CSV utilities ────────────────────────────────────────────
+// ── Markdown front matter ─────────────────────────────────────
 
 /**
- * Split one CSV row into fields, respecting double-quoted fields
- * (handles embedded commas and escaped double-quotes "").
+ * Parse a Markdown file's YAML front matter into a plain object.
+ * Requires js-yaml to be loaded globally (window.jsyaml).
+ * Anything after the closing --- delimiter is returned as `body`.
  *
- * @param  {string}   row
- * @returns {string[]}
+ * @param  {string}  text - Raw .md file content.
+ * @returns {Object}
  */
-export function splitCSVRow(row) {
-  const result = [];
-  let   cur     = '';
-  let   inQuote = false;
-
-  for (let i = 0; i < row.length; i++) {
-    const ch = row[i];
-    if (ch === '"') {
-      // Escaped quote inside a quoted field → literal "
-      if (inQuote && row[i + 1] === '"') { cur += '"'; i++; }
-      else inQuote = !inQuote;
-    } else if (ch === ',' && !inQuote) {
-      result.push(cur);
-      cur = '';
-    } else {
-      cur += ch;
-    }
-  }
-
-  result.push(cur);
-  return result;
-}
-
-/**
- * Parse a full CSV text → array of objects keyed by the header row.
- * Lines starting with # (after stripping leading quotes added by Excel)
- * are treated as comments and skipped.
- *
- * @param  {string}   text - Raw CSV content.
- * @returns {Object[]}
- */
-export function parseCSV(text) {
-  const lines = text
-    .replace(/\r\n/g, '\n').replace(/\r/g, '\n')
-    .split('\n')
-    .filter(l => {
-      const stripped = l.trim().replace(/^"+/, '');
-      return stripped && !stripped.startsWith('#');
-    });
-
-  if (lines.length < 2) return [];
-
-  const headers = splitCSVRow(lines[0]).map(h => h.trim());
-
-  return lines.slice(1).map(line => {
-    const vals = splitCSVRow(line);
-    const obj  = {};
-    headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
-    return obj;
-  });
+export function parseMarkdownFrontMatter(text) {
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return {};
+  const data = window.jsyaml.load(match[1]) || {};
+  const afterClose = text.indexOf('---', text.indexOf('---') + 3) + 3;
+  const body = text.slice(afterClose).trim();
+  if (body) data.body = body;
+  return data;
 }
 
 

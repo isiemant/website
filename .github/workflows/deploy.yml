@@ -23,6 +23,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Generate content manifests
+        run: |
+          ls data/projects/*.md | xargs -n1 basename | jq -R . | jq -s . > data/projects/index.json
+          ls data/updates/*.md  | xargs -n1 basename | jq -R . | jq -s . > data/updates/index.json
+
       - name: Inject commit SHA as cache-bust token
         run: sed -i "s/__CACHE_BUST__/${{ github.sha }}/g" index.html
 

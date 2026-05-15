@@ -21,12 +21,19 @@ let timelineItems = [];
 
 export function setTimelineItems(items) {
   timelineItems = items;
+  renderDots(); // rebuild dots to match new item count
 }
 
 // ── carouselGoTo delegate ─────────────────────────────────────
 // initCarousel() replaces this with the real goTo once the DOM is ready.
 
 let carouselGoToFn = () => {};
+
+// ── Dot state (populated after initCarousel runs) ─────────────
+
+let renderDotsInternal = () => {};
+
+function renderDots() { renderDotsInternal(); }
 
 export function carouselGoTo(page, animate) {
   carouselGoToFn(page, animate);
@@ -42,6 +49,34 @@ export function initCarousel() {
 
   let page = 0;
   let busy = false;
+
+  // ── Dots ─────────────────────────────────────────────────
+
+  const dotsEl = document.getElementById('timelineDots');
+
+  function buildDots() {
+    if (!dotsEl) return;
+    dotsEl.innerHTML = '';
+    const total = totalPages();
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'timeline-dot' + (i === page ? ' active' : '');
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', `Page ${i + 1}`);
+      dot.addEventListener('click', () => goTo(i, true));
+      dotsEl.appendChild(dot);
+    }
+  }
+
+  function syncDots() {
+    if (!dotsEl) return;
+    dotsEl.querySelectorAll('.timeline-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === page)
+    );
+  }
+
+  // Expose buildDots so setTimelineItems (called before initCarousel sometimes) can call it.
+  renderDotsInternal = buildDots;
 
   // ── Layout helpers ──────────────────────────────────────
 
@@ -65,6 +100,7 @@ export function initCarousel() {
     timelineEl.querySelectorAll('.timeline-item').forEach(c => {
       c.style.flex = `0 0 ${w}px`;
     });
+    buildDots(); // dot count may change when perPage() changes on resize
   }
 
   // ── Core navigation ──────────────────────────────────────
@@ -90,6 +126,7 @@ export function initCarousel() {
 
     prevBtn.disabled = page === 0;
     nextBtn.disabled = page >= totalPages() - 1;
+    syncDots();
   }
 
   // ── Controls ─────────────────────────────────────────────
@@ -128,4 +165,17 @@ export function initCarousel() {
   sizeCards();
   carouselGoToFn = goTo; // expose delegate for i18n.js
   goTo(0, false);
+
+  // ── Nudge nav buttons when updates section first enters view ──
+  const timelineNav = document.getElementById('timelineNav');
+  if (timelineNav) {
+    const nudgeObs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      nudgeObs.disconnect();
+      timelineNav.classList.add('is-nudging');
+      timelineNav.addEventListener('animationend', () => timelineNav.classList.remove('is-nudging'), { once: true });
+    }, { threshold: 0.5 });
+    const updatesSection = document.getElementById('updates');
+    if (updatesSection) nudgeObs.observe(updatesSection);
+  }
 }

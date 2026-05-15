@@ -64,11 +64,11 @@
           </p>
           <button class="btn about__story-btn" id="openStory" data-i18n="about.story-btn">Read my story →</button>
           <div class="about__tags">
-            <span data-i18n="about.tag.html">HTML &amp; CSS</span>
-            <span data-i18n="about.tag.js">JavaScript</span>
+            <span data-i18n="about.tag.coding">Vibe coding</span>
+            <span data-i18n="about.tag.marketing">Marketing</span>
             <span data-i18n="about.tag.photo">Photography</span>
-            <span data-i18n="about.tag.ai">AI &amp; Claude</span>
-            <span data-i18n="about.tag.git">Git</span>
+            <span data-i18n="about.tag.dn">Digital native</span>
+            <span data-i18n="about.tag.github">GitHub</span>
           </div>
         </div>
       </div>
@@ -91,12 +91,15 @@
       <span class="section-label" data-i18n="updates.label">Updates</span>
       <h2 data-i18n="updates.heading">What's been happening</h2>
       <p class="section-sub" data-i18n="updates.sub">Notes, links &amp; things worth sharing.</p>
-      <div class="timeline-carousel">
-        <button class="nav-btn nav-btn--timeline" id="timelinePrev" aria-label="Previous" data-i18n-aria="aria.timeline-prev">&#8592;</button>
-        <div class="timeline-window">
-          <div class="timeline" id="timeline"></div>
-        </div>
-        <button class="nav-btn nav-btn--timeline" id="timelineNext" aria-label="Next" data-i18n-aria="aria.timeline-next">&#8594;</button>
+    </div>
+    <div class="timeline-carousel">
+      <div class="timeline-window">
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <div class="timeline-carousel__nav" id="timelineNav">
+        <button class="nav-btn" id="timelinePrev" aria-label="Previous" data-i18n-aria="aria.timeline-prev">&#8592;</button>
+        <div class="timeline-dots" id="timelineDots" role="tablist"></div>
+        <button class="nav-btn" id="timelineNext" aria-label="Next" data-i18n-aria="aria.timeline-next">&#8594;</button>
       </div>
     </div>
   </section>
@@ -108,23 +111,26 @@
       <h2 data-i18n="gallery.heading">Through the lens</h2>
       <p class="section-sub" data-i18n="gallery.sub">Placeholder colours — real photos coming soon.</p>
 
-      <div class="slideshow" id="slideshow" aria-roledescription="carousel">
-        <div class="slideshow__track" id="slideshowTrack">
-          <div class="slide" data-title="Golden Hour"   style="background:#f5d5e0;"><span class="slide__label">Golden Hour</span></div>
-          <div class="slide" data-title="Forest Path"   style="background:#d5e8d5;"><span class="slide__label">Forest Path</span></div>
-          <div class="slide" data-title="Still Water"   style="background:#d5e8f5;"><span class="slide__label">Still Water</span></div>
-          <div class="slide" data-title="Morning Mist"  style="background:#e8d5f5;"><span class="slide__label">Morning Mist</span></div>
-          <div class="slide" data-title="City Lights"   style="background:#f5e8d5;"><span class="slide__label">City Lights</span></div>
-          <div class="slide" data-title="Quiet Street"  style="background:#f5d5e8;"><span class="slide__label">Quiet Street</span></div>
-          <div class="slide" data-title="Open Sky"      style="background:#d5f5e8;"><span class="slide__label">Open Sky</span></div>
-          <div class="slide" data-title="Harbour Blues" style="background:#d5ddf5;"><span class="slide__label">Harbour Blues</span></div>
-          <div class="slide" data-title="Autumn Walk"   style="background:#f5f0d5;"><span class="slide__label">Autumn Walk</span></div>
+      <div class="slideshow-wrapper">
+        <div class="slideshow" id="slideshow" aria-roledescription="carousel">
+          <div class="slideshow__track" id="slideshowTrack">
+            <div class="slide" data-title="Golden Hour"   style="background:#f5d5e0;"><span class="slide__label">Golden Hour</span></div>
+            <div class="slide" data-title="Forest Path"   style="background:#d5e8d5;"><span class="slide__label">Forest Path</span></div>
+            <div class="slide" data-title="Still Water"   style="background:#d5e8f5;"><span class="slide__label">Still Water</span></div>
+            <div class="slide" data-title="Morning Mist"  style="background:#e8d5f5;"><span class="slide__label">Morning Mist</span></div>
+            <div class="slide" data-title="City Lights"   style="background:#f5e8d5;"><span class="slide__label">City Lights</span></div>
+            <div class="slide" data-title="Quiet Street"  style="background:#f5d5e8;"><span class="slide__label">Quiet Street</span></div>
+            <div class="slide" data-title="Open Sky"      style="background:#d5f5e8;"><span class="slide__label">Open Sky</span></div>
+            <div class="slide" data-title="Harbour Blues" style="background:#d5ddf5;"><span class="slide__label">Harbour Blues</span></div>
+            <div class="slide" data-title="Autumn Walk"   style="background:#f5f0d5;"><span class="slide__label">Autumn Walk</span></div>
+          </div>
+          <div class="slideshow__dots" id="slideDots" role="tablist"></div>
         </div>
-
-        <button class="nav-btn nav-btn--slide prev" id="slidePrev" aria-label="Previous" data-i18n-aria="aria.slide-prev">&#8592;</button>
-        <button class="nav-btn nav-btn--slide next" id="slideNext" aria-label="Next" data-i18n-aria="aria.slide-next">&#8594;</button>
-
-        <div class="slideshow__dots" id="slideDots" role="tablist"></div>
+        <!-- Nav row: overlays slideshow on desktop, sits below on mobile -->
+        <div class="slideshow__nav-row" id="slideshowNav">
+          <button class="nav-btn nav-btn--slide prev" id="slidePrev" aria-label="Previous" data-i18n-aria="aria.slide-prev">&#8592;</button>
+          <button class="nav-btn nav-btn--slide next" id="slideNext" aria-label="Next" data-i18n-aria="aria.slide-next">&#8594;</button>
+        </div>
       </div>
     </div>
   </section>
@@ -201,12 +207,19 @@
     <button class="story-modal__close" id="storyClose" aria-label="Close" data-i18n-aria="aria.story-close">✕</button>
     <div class="story-slideshow">
       <div class="story-track" id="storyTrack"></div>
+      <div class="story-progress-bar" id="storyProgressBar">
+        <div class="story-progress-fill" id="storyFill"></div>
+      </div>
+      <span class="story-counter" id="storyCounter"></span>
+    </div>
+    <!-- Nav row: overlays slides on desktop, sits below on mobile -->
+    <div class="story__mobile-nav" id="storyNav">
       <button class="nav-btn nav-btn--slide prev" id="storyPrev" aria-label="Previous" data-i18n-aria="aria.story-prev">&#8592;</button>
       <button class="nav-btn nav-btn--slide next" id="storyNext" aria-label="Next" data-i18n-aria="aria.story-next">&#8594;</button>
-      <div class="slideshow__dots" id="storyDots" role="tablist"></div>
     </div>
   </dialog>
 
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

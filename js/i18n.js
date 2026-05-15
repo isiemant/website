@@ -7,12 +7,12 @@
      · Project cards (buildProjects)
      · Timeline cards (buildTimeline) + carousel reset
      · Story slides rebuild delegated to story.js (buildStorySlides)
-     · CSV loading — overwrites fallback data in TRANSLATIONS;
-       silently falls back to the built-in arrays on any error
+     · Markdown loading — fetches per-entry .md files listed in
+       index.json manifests; silently falls back to built-in arrays on error
 ───────────────────────────────────────────────────────────── */
 
 import { TRANSLATIONS }                        from './translations.js';
-import { parseCSV, revealObserver, track }     from './utils.js';
+import { parseMarkdownFrontMatter, revealObserver, track } from './utils.js';
 import { carouselGoTo, setTimelineItems }      from './carousel.js';
 import { buildStorySlides }                    from './story.js';
 
@@ -21,25 +21,40 @@ import { buildStorySlides }                    from './story.js';
 let currentLang   = 'en';
 let formSubmitted = false;
 
-// ── CSV loading ───────────────────────────────────────────────
+// ── Markdown loading ──────────────────────────────────────────
 
 /**
- * Fetch data/projects.csv and data/updates.csv, then overwrite the
- * fallback arrays in TRANSLATIONS for both languages.
- * On any error (network, parse, HTTP) the built-in fallback data
- * stays in place and a warning is logged — no UI disruption.
+ * Fetch all per-entry .md files listed in each index.json manifest,
+ * parse their YAML front matter, sort updates newest-first by date,
+ * then overwrite the fallback arrays in TRANSLATIONS for both languages.
+ * On any error the built-in fallback data stays in place — no UI disruption.
  */
-export async function loadContentCSVs() {
-  try {
-    const [projRes, updRes] = await Promise.all([
-      fetch('data/projects.csv?v=' + (document.querySelector('meta[name="cache-bust"]')?.content || Date.now())),
-      fetch('data/updates.csv?v='   + (document.querySelector('meta[name="cache-bust"]')?.content || Date.now())),
-    ]);
-    if (!projRes.ok || !updRes.ok) throw new Error('HTTP error');
+export async function loadContentData() {
+  const bust = document.querySelector('meta[name="cache-bust"]')?.content || Date.now();
+  const v    = '?v=' + bust;
 
-    const [projText, updText] = await Promise.all([projRes.text(), updRes.text()]);
-    const projRows = parseCSV(projText);
-    const updRows  = parseCSV(updText);
+  try {
+    // Fetch both manifests in parallel.
+    const [projIndex, updIndex] = await Promise.all([
+      fetch('data/projects/index.json' + v).then(r => { if (!r.ok) throw new Error('manifest HTTP error'); return r.json(); }),
+      fetch('data/updates/index.json'  + v).then(r => { if (!r.ok) throw new Error('manifest HTTP error'); return r.json(); }),
+    ]);
+
+    // Fetch all individual .md files in parallel.
+    const [projTexts, updTexts] = await Promise.all([
+      Promise.all(projIndex.map(f => fetch('data/projects/' + f + v).then(r => { if (!r.ok) throw new Error(f); return r.text(); }))),
+      Promise.all(updIndex.map( f => fetch('data/updates/'  + f + v).then(r => { if (!r.ok) throw new Error(f); return r.text(); }))),
+    ]);
+
+    const projRows = projTexts.map(parseMarkdownFrontMatter);
+    const updRows  = updTexts.map(parseMarkdownFrontMatter);
+
+    // Sort updates newest-first by date_en (e.g. "May 2026").
+    updRows.sort((a, b) => {
+      const da = a.date_en ? new Date(a.date_en) : new Date(0);
+      const db = b.date_en ? new Date(b.date_en) : new Date(0);
+      return db - da;
+    });
 
     ['en', 'de'].forEach(lang => {
       TRANSLATIONS[lang].projects = projRows.map(r => ({
@@ -59,9 +74,9 @@ export async function loadContentCSVs() {
       }));
     });
 
-    console.log('[content] CSV data loaded ✓');
+    console.log('[content] Markdown data loaded ✓');
   } catch (err) {
-    console.warn('[content] CSV load failed — using built-in fallback. (' + err.message + ')');
+    console.warn('[content] Markdown load failed — using built-in fallback. (' + err.message + ')');
   }
 }
 

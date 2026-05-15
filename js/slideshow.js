@@ -75,4 +75,17 @@ export function initSlideshow() {
   });
 
   startAuto();
+
+  // ── Nudge nav buttons when gallery first scrolls into view ────────────
+  const navRow = document.getElementById('slideshowNav');
+  if (navRow) {
+    const nudgeObs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      nudgeObs.disconnect();
+      navRow.classList.add('is-nudging');
+      navRow.addEventListener('animationend', () => navRow.classList.remove('is-nudging'), { once: true });
+    }, { threshold: 0.5 });
+    const gallerySection = document.getElementById('gallery');
+    if (gallerySection) nudgeObs.observe(gallerySection);
+  }
 }
